@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskManager Pro - Gestor Avanzado de Tareas</title>
+    <link rel="stylesheet" href="styles_pro.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header mejorado -->
+        <header class="header-enhanced">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="header-title">
+                        <h1>🚀 TaskManager Pro</h1>
+                        <p class="subtitle">Gestión avanzada de tareas con base de datos</p>
+                    </div>
+                    <div class="header-stats">
+                        <div class="stat-item">
+                            <span class="stat-icon">📊</span>
+                            <span class="stat-label">Total:</span>
+                            <span id="taskCount" class="stat-value">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-icon">✅</span>
+                            <span class="stat-label">Completadas:</span>
+                            <span id="completedCount" class="stat-value">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-icon">⏳</span>
+                            <span class="stat-label">Activas:</span>
+                            <span id="activeCount" class="stat-value">0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="header-actions">
+                        <button id="exportAllBtn" class="btn btn-secondary" title="Exportar todos los datos">
+                            <span class="btn-icon">📦</span>
+                            Exportar Todo
+                        </button>
+                        <button id="importBtn" class="btn btn-secondary" title="Importar datos">
+                            <span class="btn-icon">📥</span>
+                            Importar
+                        </button>
+                        <button id="newTaskBtn" class="btn btn-primary">
+                            <span class="btn-icon">➕</span>
+                            Nueva Tarea
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Barra de búsqueda y filtros -->
+        <div class="search-filter-bar">
+            <div class="search-section">
+                <div class="search-input-group">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" placeholder="Buscar tareas... (Ctrl+F)" class="search-input">
+                    <button id="clearSearchBtn" class="clear-search-btn" title="Limpiar búsqueda">
+                        <span class="btn-icon">❌</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label for="filterStatus">Estado:</label>
+                    <select id="filterStatus" class="filter-select">
+                        <option value="all">Todas</option>
+                        <option value="active">Activas</option>
+                        <option value="completed">Completadas</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="filterPriority">Prioridad:</label>
+                    <select id="filterPriority" class="filter-select">
+                        <option value="">Todas</option>
+                        <option value="high">Alta</option>
+                        <option value="medium">Media</option>
+                        <option value="low">Baja</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="filterCategory">Categoría:</label>
+                    <select id="filterCategory" class="filter-select">
+                        <option value="">Todas</option>
+                        <option value="Trabajo">Trabajo</option>
+                        <option value="Personal">Personal</option>
+                        <option value="Estudio">Estudio</option>
+                        <option value="Proyecto">Proyecto</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="sortBy">Ordenar por:</label>
+                    <select id="sortBy" class="filter-select">
+                        <option value="date">Fecha</option>
+                        <option value="title">Título</option>
+                        <option value="priority">Prioridad</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenedor de tareas -->
+        <div id="tasksContainer" class="tasks-container">
+            <!-- Las tareas aparecerán aquí -->
+        </div>
+
+        <!-- Modal para nueva tarea (mejorado) -->
+        <div id="newTaskModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>✨ Nueva Tarea</h2>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="taskTitle">Título de la tarea *</label>
+                            <input type="text" id="taskTitle" placeholder="Ej: Desarrollo de aplicación web" class="input-field">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="taskCategory">Categoría</label>
+                            <select id="taskCategory" class="input-field">
+                                <option value="General">General</option>
+                                <option value="Trabajo">Trabajo</option>
+                                <option value="Personal">Personal</option>
+                                <option value="Estudio">Estudio</option>
+                                <option value="Proyecto">Proyecto</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="taskPriority">Prioridad</label>
+                            <select id="taskPriority" class="input-field">
+                                <option value="low">Baja</option>
+                                <option value="medium" selected>Media</option>
+                                <option value="high">Alta</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-tips">
+                        <p>💡 <strong>Consejos:</strong></p>
+                        <ul>
+                            <li>Usa títulos descriptivos para identificar fácilmente tus tareas</li>
+                            <li>La prioridad te ayudará a organizar mejor tu trabajo</li>
+                            <li>Puedes agregar imágenes después de crear la tarea</li>
+                            <li>Usa <kbd>Ctrl+N</kbd> para crear tareas rápidamente</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="createTaskBtn" class="btn btn-primary">
+                        <span class="btn-icon">✨</span>
+                        Crear Tarea
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para ver detalles de tarea (mejorado) -->
+        <div id="taskDetailModal" class="modal">
+            <div class="modal-content modal-large">
+                <div class="modal-header">
+                    <h2 id="taskDetailTitle">📋 Detalles de Tarea</h2>
+                    <span class="close" id="closeTaskDetail">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div id="taskDetailContent" class="task-detail-content">
+                        <!-- El contenido se llenará dinámicamente -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="addNoteBtn" class="btn btn-secondary">
+                        <span class="btn-icon">📝</span>
+                        Agregar Nota
+                    </button>
+                    <button id="addImageBtn" class="btn btn-secondary">
+                        <span class="btn-icon">🖼️</span>
+                        Subir Imagen
+                    </button>
+                    <button id="exportTaskBtn" class="btn btn-success">
+                        <span class="btn-icon">📄</span>
+                        Exportar PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para vista de imagen completa -->
+        <div id="imageModal" class="modal">
+            <div class="modal-content modal-image">
+                <div class="modal-header">
+                    <h2>🖼️ Vista de Imagen</h2>
+                    <span class="close" id="closeImageModal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <img id="fullscreenImage" src="" alt="Imagen completa">
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de confirmación -->
+        <div id="confirmModal" class="modal">
+            <div class="modal-content modal-small">
+                <div class="modal-header">
+                    <h2 id="confirmTitle">Confirmar acción</h2>
+                    <span class="close" id="closeConfirmModal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <p id="confirmMessage">¿Estás seguro?</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="confirmCancelBtn" class="btn btn-secondary">Cancelar</button>
+                    <button id="confirmActionBtn" class="btn btn-danger">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script_pro.js"></script>
+</body>
+</html>
