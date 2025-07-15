@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug - Gestor de Tareas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        .debug-info {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success {
+            background: #e8f5e8;
+            color: #2e7d32;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        button {
+            background: #1976d2;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #1565c0;
+        }
+    </style>
+</head>
+<body>
+    <div class="debug-info">
+        <h2>🔍 Debug - Gestor de Tareas</h2>
+        <p>Verificando funcionamiento básico...</p>
+        <div id="status">Cargando...</div>
+        <button onclick="testBasicFunctions()">Probar Funciones Básicas</button>
+        <button onclick="testTaskCreation()">Probar Creación de Tarea</button>
+        <button onclick="testModal()">Probar Modal</button>
+    </div>
+
+    <div id="results"></div>
+
+    <script>
+        // Función de debug simple
+        function log(message, type = 'info') {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = type;
+            div.textContent = new Date().toLocaleTimeString() + ': ' + message;
+            results.appendChild(div);
+            console.log(message);
+        }
+
+        // Verificar si el script principal se carga
+        window.addEventListener('load', function() {
+            const statusDiv = document.getElementById('status');
+            
+            try {
+                // Verificar si taskManager existe
+                if (typeof taskManager !== 'undefined') {
+                    statusDiv.innerHTML = '<div class="success">✅ TaskManager cargado correctamente</div>';
+                    log('TaskManager detectado', 'success');
+                } else {
+                    statusDiv.innerHTML = '<div class="error">❌ TaskManager no encontrado</div>';
+                    log('TaskManager no encontrado', 'error');
+                }
+                
+                // Verificar elementos HTML
+                const elements = ['newTaskBtn', 'taskDetailModal', 'tasksContainer'];
+                elements.forEach(id => {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        log(`✅ Elemento ${id} encontrado`, 'success');
+                    } else {
+                        log(`❌ Elemento ${id} no encontrado`, 'error');
+                    }
+                });
+                
+            } catch (error) {
+                statusDiv.innerHTML = '<div class="error">❌ Error: ' + error.message + '</div>';
+                log('Error en verificación: ' + error.message, 'error');
+            }
+        });
+
+        function testBasicFunctions() {
+            log('Iniciando pruebas básicas...');
+            
+            try {
+                // Verificar localStorage
+                localStorage.setItem('test', 'OK');
+                const test = localStorage.getItem('test');
+                if (test === 'OK') {
+                    log('✅ localStorage funcionando', 'success');
+                    localStorage.removeItem('test');
+                } else {
+                    log('❌ localStorage no funcionando', 'error');
+                }
+                
+                // Verificar JSON
+                const testObj = {test: 'data'};
+                const jsonStr = JSON.stringify(testObj);
+                const parsedObj = JSON.parse(jsonStr);
+                if (parsedObj.test === 'data') {
+                    log('✅ JSON funcionando', 'success');
+                } else {
+                    log('❌ JSON no funcionando', 'error');
+                }
+                
+            } catch (error) {
+                log('❌ Error en pruebas básicas: ' + error.message, 'error');
+            }
+        }
+
+        function testTaskCreation() {
+            log('Probando creación de tareas...');
+            
+            try {
+                if (typeof taskManager !== 'undefined' && taskManager.createTask) {
+                    log('✅ Método createTask encontrado', 'success');
+                } else {
+                    log('❌ Método createTask no encontrado', 'error');
+                }
+                
+                if (typeof taskManager !== 'undefined' && taskManager.tasks) {
+                    log('✅ Array de tareas encontrado', 'success');
+                    log('Tareas actuales: ' + taskManager.tasks.length, 'info');
+                } else {
+                    log('❌ Array de tareas no encontrado', 'error');
+                }
+                
+            } catch (error) {
+                log('❌ Error en prueba de creación: ' + error.message, 'error');
+            }
+        }
+
+        function testModal() {
+            log('Probando modal...');
+            
+            try {
+                const modal = document.getElementById('taskDetailModal');
+                if (modal) {
+                    log('✅ Modal encontrado', 'success');
+                    modal.style.display = 'block';
+                    log('Modal mostrado', 'info');
+                    
+                    setTimeout(() => {
+                        modal.style.display = 'none';
+                        log('Modal ocultado', 'info');
+                    }, 2000);
+                } else {
+                    log('❌ Modal no encontrado', 'error');
+                }
+                
+            } catch (error) {
+                log('❌ Error en prueba de modal: ' + error.message, 'error');
+            }
+        }
+    </script>
+    
+    <!-- Cargar el script principal -->
+    <script src="script.js"></script>
+</body>
+</html>

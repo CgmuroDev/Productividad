@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Tareas - Seguimiento de Progreso</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="header-title">
+                    <h1>📋 Gestor de Tareas</h1>
+                    <p class="subtitle">Seguimiento visual de progreso</p>
+                </div>
+                <div class="header-actions">
+                    <div class="task-counter">
+                        <span id="taskCount">0</span> tareas
+                    </div>
+                    <button id="newTaskBtn" class="btn btn-primary">
+                        <span class="btn-icon">➕</span>
+                        Nueva Tarea
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div id="tasksContainer" class="tasks-container">
+            <!-- Las tareas aparecerán aquí -->
+        </div>
+
+        <!-- Modal para nueva tarea -->
+        <div id="newTaskModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>✨ Nueva Tarea</h2>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <label for="taskTitle">Título de la tarea</label>
+                        <input type="text" id="taskTitle" placeholder="Ej: Desarrollo de aplicación web" class="input-field">
+                    </div>
+                    <div class="modal-tips">
+                        <p>💡 <strong>Consejos:</strong></p>
+                        <ul>
+                            <li>Usa títulos descriptivos para identificar fácilmente tus tareas</li>
+                            <li>Puedes agregar imágenes con Ctrl+V después de crear la tarea</li>
+                            <li>Usa Ctrl+N para crear tareas rápidamente</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="createTaskBtn" class="btn btn-primary">
+                        <span class="btn-icon">✨</span>
+                        Crear Tarea
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para ver detalles de tarea -->
+        <div id="taskDetailModal" class="modal">
+            <div class="modal-content modal-large">
+                <div class="modal-header">
+                    <h2 id="taskDetailTitle">📋 Detalles de Tarea</h2>
+                    <span class="close" id="closeTaskDetail">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div id="taskDetailContent" class="task-detail-content">
+                        <!-- El contenido se llenará dinámicamente -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="addNoteBtn" class="btn btn-secondary">
+                        <span class="btn-icon">📝</span>
+                        Agregar Nota
+                    </button>
+                    <button id="addImageBtn" class="btn btn-secondary">
+                        <span class="btn-icon">🖼️</span>
+                        Subir Imagen
+                    </button>
+                    <button id="exportTaskBtn" class="btn btn-success">
+                        <span class="btn-icon">📄</span>
+                        Exportar PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script_new.js"></script>
+</body>
+</html>
